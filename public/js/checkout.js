@@ -3,10 +3,23 @@
 /* global fetch */
 /* global URLSearchParams */
 
-const stripe;
+const stripe = Stripe('pk_test_51OiviCI8LnQyDT8tolTLgFzE7clum7JvuJuJCvpRwjET54AKcmIqPpU7SB6ej9OLpkqwoadk7En6G6oP439GbThu000GW787b0');
 
 let amount;
-initialize();
+
+const inputNumber = document.querySelector('form#payment-form input[type="number"][name="montant-personnalise"]');
+
+function amountSelected(event) {
+  let value = inputNumber.value;
+  if (value > 1) {
+    amount = value;
+    initialize();
+  }
+}
+
+inputNumber.addEventListener('change', function(event){
+  amountSelected();
+});
 
 let elements;
 
@@ -45,7 +58,7 @@ async function handleSubmit(e) {
   const { error } = await stripe.confirmPayment({
     elements,
     confirmParams: {
-      return_url: "",
+      return_url: "https://ryanroudaut.sites.3wa.io/PHP/Donate-for-ducks/public/app/views/checkout.html",
     },
   });
 
